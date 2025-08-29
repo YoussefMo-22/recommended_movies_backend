@@ -1,0 +1,10 @@
+Django
+psycopg2-binary
+djangorestframework
+djangorestframework-simplejwt
+python-dotenv
+pandas
+scikit-learn
+numpy
+whitenoise
+gunicorn
