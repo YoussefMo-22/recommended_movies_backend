@@ -46,10 +46,20 @@ class UserProfileView(APIView):
         return Response(serializer.data)
 
 
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.decorators import action
+
+class MoviePagination(PageNumberPagination):
+    page_size = 10  # default items per page
+    page_size_query_param = "page_size"  # allow client to override
+    max_page_size = 100
+
+
 class MovieViewSet(viewsets.ReadOnlyModelViewSet):
-    """Browse/search movies with filters & annotations"""
+    """Browse/search movies with filters, pagination & genre filtering"""
     serializer_class = MovieSerializer
     permission_classes = [permissions.AllowAny]
+    pagination_class = MoviePagination
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ["year", "avg_rating", "ratings_count"]
     ordering = ["id"]
@@ -69,6 +79,17 @@ class MovieViewSet(viewsets.ReadOnlyModelViewSet):
         if year and year.isdigit():
             qs = qs.filter(year=int(year))
         return qs
+
+    @action(detail=False, methods=["get"], url_path="by-genre/(?P<genre>[^/.]+)")
+    def by_genre(self, request, genre=None):
+        """Get all movies in a specific genre with pagination"""
+        qs = self.get_queryset().filter(genres__name__icontains=genre)
+        page = self.paginate_queryset(qs)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = self.get_serializer(qs, many=True)
+        return Response(serializer.data)
 
 
 class RatingViewSet(mixins.CreateModelMixin,
@@ -179,17 +200,6 @@ def recommend_similar_movies(request, movie_id):
     serializer = MovieSerializer(recommendations, many=True)
     return Response(serializer.data)
 
-
-import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-from django.shortcuts import get_object_or_404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from api.models import Movie, Rating
-
-
-# api/views.py  (or api/recommender/hybrid.py and import the view)
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
