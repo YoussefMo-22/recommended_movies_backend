@@ -2,6 +2,15 @@ Django
 psycopg2-binary
 djangorestframework
 djangorestframework-simplejwt
+drf-yasg
+drf-spectacular
+drf-spectacular[sidecar]
+django-cors-headers
+requests
+django-environ
+dj-database-url
+python-decouple
+django-jazzmin
 python-dotenv
 pandas
 scikit-learn
