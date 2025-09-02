@@ -54,27 +54,32 @@ It supports user registration, authentication, movie browsing, ratings, and both
 ```bash
 git clone <repository-url>
 cd <repo-directory>
-
+```
 2. **Create a virtual environment**
+```bash
 python -m venv venv
 source venv/bin/activate  # Linux / Mac
 venv\Scripts\activate     # Windows
-
+```
 3. **Install dependencies**
+```bash
 pip install -r requirements.txt
-
+```
 4. **Configure environment variables**
 Create a .env file in the project root:
+```bash
 DEBUG=True
 SECRET_KEY=your-secret-key
 DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/DB_NAME
-
+```
 5. **Apply migrations**
+```bash
 python manage.py migrate
-
+```
 6. **Run the server**
+```bash
 python manage.py runserver
-
+```
 The API will be available at http://127.0.0.1:8000/.
 
 ## API Endpoints
