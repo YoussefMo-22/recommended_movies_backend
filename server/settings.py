@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-n+86z^sxiq2w9$-1e)ixo_8q#725l)f@_zk5!w4#!z#_(&d9ep
 DEBUG = True
 # DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", 'recommended_movies_backend.onrender.com']
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", 'recommended_movies_backend.onrender.com', '.vercel.app']
 
 TMDB_API_KEY = "a6e2bf483f77cb93284f7490fce470cc"
 # TMDB_API_KEY = os.environ.get("TMDB_API_KEY", "")
