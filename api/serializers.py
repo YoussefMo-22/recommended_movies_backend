@@ -21,6 +21,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
 
 
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "username", "email")
+
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
@@ -35,7 +44,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ("id", "username", "email", "profile")
 
 
-# ✅ Genre serializer
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
@@ -45,7 +53,7 @@ class GenreSerializer(serializers.ModelSerializer):
 class MovieSerializer(serializers.ModelSerializer):
     avg_rating = serializers.FloatField(read_only=True)
     ratings_count = serializers.IntegerField(read_only=True)
-    genres = GenreSerializer(many=True, read_only=True)  # ✅ Show genre names instead of IDs
+    genres = GenreSerializer(many=True, read_only=True)  # Show genre names instead of IDs
 
     class Meta:
         model = Movie
@@ -54,7 +62,7 @@ class MovieSerializer(serializers.ModelSerializer):
             "movielens_id",
             "title",
             "year",
-            "genres",         # will now return [{"id": 1, "name": "Action"}, ...]
+            "genres",         
             "imdb_id",
             "tmdb_id",
             "description",

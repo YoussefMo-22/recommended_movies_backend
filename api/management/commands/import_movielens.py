@@ -2,7 +2,7 @@ import csv
 import os
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
-from api.models import Movie, Rating, Tag, Genre  # 👈 Genre added
+from api.models import Movie, Rating, Tag, Genre
 
 User = get_user_model()
 
@@ -77,7 +77,7 @@ class Command(BaseCommand):
                 if created:
                     created_count += 1
 
-                # 👇 Handle genres as many-to-many
+                # Handle genres as many-to-many
                 genres_str = row["genres"].strip()
                 if genres_str and genres_str != "(no genres listed)":
                     genre_names = [g.strip() for g in genres_str.split("|")]

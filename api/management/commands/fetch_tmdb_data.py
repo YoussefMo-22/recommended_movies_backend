@@ -10,7 +10,7 @@ class Command(BaseCommand):
     help = "Fetch poster and description for ALL movies using TMDb API"
 
     def handle(self, *args, **kwargs):
-        movies = Movie.objects.all()  # ✅ update ALL movies
+        movies = Movie.objects.all()  # update ALL movies
         updated = 0
         skipped = 0
         failed = 0
@@ -29,7 +29,7 @@ class Command(BaseCommand):
                 poster_path = data.get("poster_path")
                 overview = data.get("overview")
 
-                # ✅ always refresh poster_url and description if available
+                # always refresh poster_url and description if available
                 if poster_path:
                     movie.poster_url = f"{TMDB_IMAGE_BASE}{poster_path}"
                 if overview:
@@ -46,6 +46,6 @@ class Command(BaseCommand):
 
         self.stdout.write(
             self.style.SUCCESS(
-                f"\nDone! ✅ Updated: {updated}, Skipped: {skipped}, Failed: {failed}, Total: {movies.count()}"
+                f"\nDone! Updated: {updated}, Skipped: {skipped}, Failed: {failed}, Total: {movies.count()}"
             )
         )
