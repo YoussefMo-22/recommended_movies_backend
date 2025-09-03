@@ -34,4 +34,12 @@ urlpatterns = [
     path("recommend/<int:user_id>/", views.recommend_movies, name="recommend_movies"), 
     path("movies/<int:movie_id>/recommendations/", recommend_similar_movies, name="recommend_similar_movies"),
     path("movies/<int:movie_id>/hybrid/", HybridRecommendationView.as_view(), name="hybrid-recommendations"),
+
+    # Fetch movies and ratings
+    path("movies/", MovieViewSet.as_view({'get': 'list'}), name="movie-list"),
+    path("movies/<int:pk>/", MovieViewSet.as_view({'get': 'retrieve'}), name="movie-detail"),
+    path("ratings/", RatingViewSet.as_view({'get': 'list'}), name="rating-list"),
+    path("ratings/<int:pk>/", RatingViewSet.as_view({'get': 'retrieve'}), name="rating-detail"),
+
+    path('', include(router.urls)),
 ]
