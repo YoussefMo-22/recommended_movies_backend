@@ -12,8 +12,5 @@ dj-database-url
 python-decouple
 django-jazzmin
 python-dotenv
-pandas
-scikit-learn
-numpy
 whitenoise
 gunicorn
