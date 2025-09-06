@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
-from ..serializers import MovieSerializer
+from ..serializers.MovieSerializer import MovieSerializer
 from ..recommender.collaborative import recommend_for_user
 from ..recommender.content_based import get_content_based_recommendations
 

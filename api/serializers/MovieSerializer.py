@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from ..models import Movie
-import GenreSerializer
+from ..serializers.GenreSerializer import GenreSerializer
 
 class MovieSerializer(serializers.ModelSerializer):
     avg_rating = serializers.FloatField(read_only=True)

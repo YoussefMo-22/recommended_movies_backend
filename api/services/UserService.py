@@ -1,7 +1,7 @@
 # services/UserService.py
 from django.contrib.auth import get_user_model
 from rest_framework.exceptions import ValidationError
-from ..serializers import RegisterSerializer, UserSerializer, UserProfileSerializer
+from ..serializers.UserSerializer import RegisterSerializer, UserSerializer, UserProfileSerializer
 from ..models import UserProfile
 
 User = get_user_model()
