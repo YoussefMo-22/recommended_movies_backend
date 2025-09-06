@@ -5,19 +5,15 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from .views import (
-    RegisterView,
-    UserProfileView,
-    MovieViewSet,
-    RatingViewSet,
-    RecommendationView,
-    MeView
-)
-from api import views
-from api.views import recommend_similar_movies
-from .views import HybridRecommendationView
+from api.views.UserView import RegisterView, MeView
+
+from api.views.MovieView import MovieViewSet
+from api.views.RatingView import RatingViewSet
+from api.views.RecommenationView import recommend_movies, recommend_similar_movies
+from api.views.HybridView import HybridRecommendationView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
+# Router for viewsets
 router = DefaultRouter()
 router.register(r"movies", MovieViewSet, basename="movie")
 router.register(r"ratings", RatingViewSet, basename="rating")
@@ -30,16 +26,15 @@ urlpatterns = [
     path("auth/me/", MeView.as_view(), name="me"),
 
     # Recommendations
-    path("recommendations/", RecommendationView.as_view(), name="recommendations"),
-    path("recommend/<int:user_id>/", views.recommend_movies, name="recommend_movies"), 
+    path("recommend/<int:user_id>/", recommend_movies, name="recommend_movies"), 
     path("movies/<int:movie_id>/recommendations/", recommend_similar_movies, name="recommend_similar_movies"),
     path("movies/<int:movie_id>/hybrid/", HybridRecommendationView.as_view(), name="hybrid-recommendations"),
 
-    # Fetch movies and ratings
-    path("movies/", MovieViewSet.as_view({'get': 'list'}), name="movie-list"),
-    path("movies/<int:pk>/", MovieViewSet.as_view({'get': 'retrieve'}), name="movie-detail"),
-    path("ratings/", RatingViewSet.as_view({'get': 'list'}), name="rating-list"),
-    path("ratings/<int:pk>/", RatingViewSet.as_view({'get': 'retrieve'}), name="rating-detail"),
+    # API schema & docs
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("schema/swagger-ui/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+    path("schema/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
 
-    path('', include(router.urls)),
+    # Router endpoints (movies, ratings, etc.)
+    path("", include(router.urls)),
 ]
