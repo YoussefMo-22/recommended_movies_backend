@@ -1,6 +1,6 @@
-# services/UserService.py
-from django.contrib.auth import get_user_model
-from rest_framework.exceptions import ValidationError
+from django.contrib.auth import get_user_model, authenticate
+from rest_framework.exceptions import ValidationError, AuthenticationFailed
+from rest_framework_simplejwt.tokens import RefreshToken
 from ..serializers.UserSerializer import RegisterSerializer, UserSerializer, UserProfileSerializer
 from ..models import UserProfile
 
@@ -11,7 +11,20 @@ class UserService:
         serializer = RegisterSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        UserProfile.objects.get_or_create(user=user)
         return user
+
+    def login_user(self, username: str, password: str):
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise AuthenticationFailed("Invalid username or password")
+        
+        refresh = RefreshToken.for_user(user)
+        return {
+            "user": UserSerializer(user).data,
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+        }
 
     def get_me(self, user):
         return UserSerializer(user).data
